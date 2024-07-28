@@ -3,7 +3,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <meta name="color-scheme" content="light dark">
-  <title>llama.cpp - chat</title>
+  <title>Alto Health - chat</title>
 
   <style>
     body {
@@ -691,7 +691,7 @@
                 <a href="#" style="cursor: help;" title="Help" onclick=${e => {
                   e.preventDefault();
                   alert(`STT supported by your browser: ${SpeechRecognition ? 'Yes' : 'No'}\n` +
-                  `(TTS and speech recognition are not provided by llama.cpp)\n` +
+                  `(TTS and speech recognition are not provided by Alto Health)\n` +
                   `Note: STT requires HTTPS to work.`);
                 }}>[?]</a>
                 <button disabled=${generating.value} onclick=${talkActive.value ? talkStop : talk}>${talkActive.value ? "Stop Talking" : "Talk"}</button>
@@ -703,7 +703,7 @@
               <div>
                 <a href="#" style="cursor: help;" title="Help" onclick=${e => {
                   e.preventDefault();
-                  alert(`TTS supported by your browser: ${tts ? 'Yes' : 'No'}\n(TTS and speech recognition are not provided by llama.cpp)`);
+                  alert(`TTS supported by your browser: ${tts ? 'Yes' : 'No'}\n(TTS and speech recognition are not provided by Alto Health)`);
                 }}>[?]</a>
                 <label for="tts-voices" style="line-height: initial;">Bot Voice:</label>
                 <select id="tts-voices" name="tts-voices" onchange=${(e) => ttsVoice.value = e.target.value} style="max-width: 100px;">
@@ -1258,7 +1258,7 @@
           <header>
             <div class="grid-container">
               <div class="grid-item"></div>
-              <div class="grid-item"><h1>llama.cpp</h1></div>
+              <div class="grid-item"><h1>Alto Test</h1></div>
               <div class="grid-item"><a class="customlink" href="index-new.html">New UI</a></div>
             </div>
           </header>
@@ -1273,7 +1273,7 @@
 
           <footer>
             <p><${ModelGenerationInfo} /></p>
-            <p>Powered by <a href="https://github.com/ggerganov/llama.cpp">llama.cpp</a> and <a href="https://ggml.ai">ggml.ai</a>.</p>
+            <p>Powered by <a href="https://github.com/ggerganov/Alto Health">Alto Health</a> and <a href="https://ggml.ai">ggml.ai</a>.</p>
           </footer>
         </div>
       `;
