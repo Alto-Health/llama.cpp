@@ -1,5 +1,5 @@
 root ::= nameEntityRecognition
-nameEntityRecognition ::= "{"   ws   "\"entityName\":"   ws   string   ","   ws   "\"entityValue\":"   ws   string   "}"
+nameEntityRecognition ::= "{"   ws   "\"entityName\":"   ws   string   ","   ws   "\"entityDescript\":"   ws   string   ","   ws   "\"entityValue\":"   ws   string   "}"
 nameEntityRecognitionlist ::= "[]" | "["   ws   nameEntityRecognition   (","   ws   nameEntityRecognition)*   "]"
 string ::= "\""   ([^"]*)   "\""
 boolean ::= "true" | "false"
