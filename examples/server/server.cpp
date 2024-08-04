@@ -43,6 +43,8 @@
 #include <signal.h>
 #include <memory>
 
+
+
 using json = nlohmann::ordered_json;
 
 bool server_verbose = false;
@@ -828,9 +830,18 @@ struct server_context {
                 if (!slot.prompt.is_string()) {
                     continue;
                 }
+                // Append the new string
+                // std::string add_prompt = " Based on the above information, do the name entity recogniton for me and return in the JSON format!";
+
+
 
                 // current slot's prompt
                 std::string slot_prompt = slot.prompt.get<std::string>();
+
+
+                // slot_prompt += add_prompt;
+                // slot.prompt = slot_prompt; // Update slot.prompt with the new string
+                // std::cout << "****************************** slot.prompt: ******************************" << add_prompt << std::endl;
 
                 // length of the current slot's prompt
                 int slot_prompt_len = slot_prompt.size();
@@ -969,6 +980,14 @@ struct server_context {
                 (prompt->is_array() &&  prompt->size() == 1 && prompt->at(0).is_string()) ||
                 (prompt->is_array() && !prompt->empty()     && prompt->at(0).is_number_integer())) {
                 slot.prompt = *prompt;
+				// Append the new string
+                std::string add_prompt = " Based on the above information, do the name entity recogniton for me and return in the JSON format!";
+				std::string slot_prompt = slot.prompt.get<std::string>();
+                slot_prompt += add_prompt;
+				slot.prompt = slot_prompt;
+                // slot.prompt = slot_prompt; // Update slot.prompt with the new string
+				std::cout << "****************************** Input Prompt: ******************************" << slot.prompt << std::endl;
+
             } else {
                 send_error(task, "\"prompt\" must be a string or an array of integers", ERROR_TYPE_INVALID_REQUEST);
                 return false;
@@ -1427,15 +1446,26 @@ struct server_context {
         res.id_multi = slot.id_multi;
         res.error    = false;
         res.stop     = true;
+
+        // Parse the input JSON
+        // std::string prompt_str = slot.prompt.dump();
+        //json input_json =  json::parse(prompt_str);
+        // std::string entity_name = input_json.at("entityName");
+
+
+        // std::string entity_name = input_json["entityName"];
+        // json output_json = { {"entityName", entity_name}, {"entityValue", entity_name} };
+
+
         res.data     = json {
-            {"content",             !slot.params.stream ? slot.generated_text : ""},
+            {"input",              slot.prompt},
+            {"output",             !slot.params.stream ? slot.generated_text : ""},
             {"id_slot",             slot.id},
             {"stop",                true},
-            {"model",               params.model_alias},
+            /* {"model",               params.model_alias}, */
             {"tokens_predicted",    slot.n_decoded},
             {"tokens_evaluated",    slot.n_prompt_tokens},
-            {"generation_settings", get_formated_generation(slot)},
-            {"prompt",              slot.prompt},
+            /* {"generation_settings", get_formated_generation(slot)},*/
             {"truncated",           slot.truncated},
             {"stopped_eos",         slot.stopped_eos},
             {"stopped_word",        slot.stopped_word},
