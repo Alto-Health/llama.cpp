@@ -151,6 +151,7 @@ struct server_slot {
 
     json prompt; // can be either a string, array of strings or array of token ids
 
+	std::string originalPrompt; // Store the original prompt as a string
     // when a task is submitted, we first tokenize the prompt and store it here
     std::vector<llama_token> prompt_tokens;
 
@@ -981,13 +982,23 @@ struct server_context {
                 (prompt->is_array() && !prompt->empty()     && prompt->at(0).is_number_integer())) {
                 slot.prompt = *prompt;
 				// Append the new string
-                std::string add_prompt = " Based on the above information, do the name entity recogniton for me and return in the JSON format!";
-				std::string slot_prompt = slot.prompt.get<std::string>();
-                slot_prompt += add_prompt;
-				slot.prompt = slot_prompt;
-                // slot.prompt = slot_prompt; // Update slot.prompt with the new string
-				std::cout << "****************************** Input Prompt: ******************************" << slot.prompt << std::endl;
+				if (slot.prompt.is_string()) {
 
+					slot.originalPrompt = slot.prompt.get<std::string>();
+
+                	std::string add_prompt = " \n Based on the above information, do the name entity recogniton for me and return in the JSON format. The nameEntity is the name of the entity, and the ";
+
+					std::string slot_prompt = slot.prompt.get<std::string>();
+                	slot_prompt += add_prompt;
+					slot.prompt = slot_prompt;
+                	// slot.prompt = slot_prompt; // Update slot.prompt with the new string
+                	std::cout << "****************************** Input Prompt: ******************************" << slot.originalPrompt << std::endl;
+                	std::cout << "****************************** Modified Prompt: ******************************" << slot.prompt << std::endl;
+
+				    } else {
+                		send_error(task, "\"prompt\" must be a string", ERROR_TYPE_INVALID_REQUEST);
+                		return false;
+            		}
             } else {
                 send_error(task, "\"prompt\" must be a string or an array of integers", ERROR_TYPE_INVALID_REQUEST);
                 return false;
@@ -1457,8 +1468,10 @@ struct server_context {
         // json output_json = { {"entityName", entity_name}, {"entityValue", entity_name} };
 
 
+
         res.data     = json {
-            {"input",              slot.prompt},
+            // {"input",              slot.prompt},
+            {"input",              slot.originalPrompt},
             {"output",             !slot.params.stream ? slot.generated_text : ""},
             {"id_slot",             slot.id},
             {"stop",                true},
