@@ -1,6 +1,6 @@
-root ::= nameEntityRecognition
-nameEntityRecognition ::= "{"   ws   "\"entityName\":"   ws   string   ","   ws   "\"entityDescript\":"   ws   string   ","   ws   "\"entityValue\":"   ws   string   "}"
-nameEntityRecognitionlist ::= "[]" | "["   ws   nameEntityRecognition   (","   ws   nameEntityRecognition)*   "]"
+root ::= NameEntityRecognition
+NameEntityRecognition ::= "{"   ws   "\"entity_name\":"   ws   string   ","   ws   "\"entity_description\":"   ws   string   ","   ws   "\"entity_value\":"   ws   string   "}"
+NameEntityRecognitionlist ::= "[]" | "["   ws   NameEntityRecognition   (","   ws   NameEntityRecognition)*   "]"
 string ::= "\""   ([^"]*)   "\""
 boolean ::= "true" | "false"
 ws ::= [ \t\n]*
