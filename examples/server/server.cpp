@@ -986,7 +986,7 @@ struct server_context {
 
 					slot.originalPrompt = slot.prompt.get<std::string>();
 
-                	std::string add_prompt = " Here, The entity_name is the name of the entity, and the entity_description is the description of the entity. Now, based on the list here, Return the JSON format with entity_name, entity_description, entity_value, where the entity_value is the value of the entity, which is the value you need to extract from the name entities.";
+                	std::string add_prompt = " Here, the entity_name is the name of the entity, and the entity_description is the description of the entity. Now, based on the list here, Return and update the JSON format called entities with entity_name, entity_description, entity_value, where the entity_value is the value of the entity, which is the value you need to extract from the name entities.";
 
 					std::string slot_prompt = slot.prompt.get<std::string>();
                 	slot_prompt += add_prompt;
